@@ -31,7 +31,7 @@ private float spriteHalfLen;
         myCollider.Raycast(transform.TransformDirection(Vector2.right), hitInfo, 1000f);
             RaycastHit2D hit = hitInfo[0];
             if (hit.distance - spriteHalfLen > 1){
-                myMove.MovePosition(transform.position + new Vector3(1, 0, 0));
+                myMove.MovePosition(transform.position + new Vector3(.6f, 0, 0));
                 myCollider.Raycast(transform.TransformDirection(Vector2.right), hitInfo, 1000f);
             }
 
@@ -47,7 +47,7 @@ private float spriteHalfLen;
             RaycastHit2D hit = hitInfo[0];
             
             if (hit.distance - spriteHalfLen > 1){
-                myMove.MovePosition(transform.position + new Vector3(-1, 0, 0));
+                myMove.MovePosition(transform.position + new Vector3(-.6f, 0, 0));
             }
             else if (hit.collider.name != null){
                 myMove.MovePosition(transform.position - new Vector3(hit.distance - spriteHalfLen - 0.001f, 0, 0));
