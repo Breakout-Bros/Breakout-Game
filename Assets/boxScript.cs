@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+
 
 public class boxScript : MonoBehaviour
 {
-        private bool destroyBlock;
+    public AudioSource audioSource;
+
+    private bool destroyBlock;
 
     // Start is called before the first frame update
     void Start()
