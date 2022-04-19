@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System; // for Math
+using static System.Math;
 
 //Citation: https://gamedevbeginner.com/raycasts-in-unity-made-easy/
 
@@ -35,11 +35,6 @@ private int segments = 5;
     void Update()
     {
         if (Input.GetKey (KeyCode.RightArrow)){
-        
-        //Debug.Log(myCollider);
-
-
-
         myCollider.Raycast(transform.TransformDirection(Vector2.right), hitInfo, 1000f);
             RaycastHit2D hit = hitInfo[0];
             if (hit.distance - spriteHalfLen > 1){
@@ -75,14 +70,11 @@ private int segments = 5;
      Vector3 normal = collision.contacts[0].normal;
      Vector3 vel = myBody.velocity;
      Vector3 colPoint = collision.contacts[0].point;
-     Vector3 headingVector = colPoint - myBody.transform.position;
-     heading = headingVector.x + spriteHalfLen;
 
-     ////////////////////////// keep this:
-    //Debug.Log(headingVector);// this is where on the paddle the collision occurred!
-     //////////////////////////
-    
-    
+     // this is where on the paddle the collision occurred
+     Vector3 headingVector = colPoint - myBody.transform.position;
+     heading = headingVector.x + spriteHalfLen; //converted headingVector scale
+
      //Vector3.OrthoNormalize(ref heading, ref colPoint);
 
             // Debug.Log("after: " + heading);// Vector3.Angle(vel, -normal));
@@ -104,7 +96,7 @@ private int segments = 5;
   public int getCollisionSegment(){
       // this gets which segment (1-5, left to right) of the paddle the ball hit
       float headingPercent = heading / spriteLen;
-      int segment = (int) Math.Ceiling(headingPercent * 100 / (100 / segments));
+      int segment = (int) Ceiling(headingPercent * 100 / (100 / segments));
       return segment;
   }
 

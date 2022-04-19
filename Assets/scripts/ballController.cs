@@ -6,7 +6,6 @@ public class BallController : MonoBehaviour
 {
      public float MoveSpeed = 250.0f;
      public Rigidbody2D myBall;
-    public Vector3 myCollisionVelocityBall;
     public Vector3 direction;
     private Vector2 tempBallVelocity;
     public float collisionAngleTest1;
@@ -26,8 +25,7 @@ public class BallController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    //myCollisionVelocityBall = myBall.velocity;
-
+      //TODO: somewhere here we'll have to set the velocity as steady
     }
  void OnCollisionEnter2D(Collision2D collision){
 
@@ -36,31 +34,21 @@ public class BallController : MonoBehaviour
         // collisionAngleTest1 = Vector3.Angle(myCollisionVelocityBall, -normal);
        //  Debug.Log("collision Angle: " + collisionAngleTest1); // this is the angle the ball hits the paddle!
 
-       // myCollisionVelocity = myBall.velocity;
-       // print(myCollisionVelocityBall); // this is the direction of the ball!!!!!!! (before collision)
-        
-
-
-
-
+        // this gets the method we need from PaddleController
         GameObject go = GameObject.Find("paddle");
         PaddleController paddleController = (PaddleController) go.GetComponent(typeof(PaddleController));
-        //print(paddleController.getCollisionSegment());
+
+        // this gets which part (segment, 1-5) of the paddle the ball hit
         collisionPaddleSegment = paddleController.getCollisionSegment();
-        print(collisionPaddleSegment);
         
         if (switchDirectionCheck()){
           // reverse direction
           tempBallVelocity = new Vector2(myBall.velocity.x *-1, myBall.velocity.y);
-          //tempBallVelocity.x *= -1;
           myBall.velocity = tempBallVelocity;
         }
         
         print("myBall.velocity is" + myBall.velocity);
         
-        //myBall.velocity *= -1;
-       //myCollisionVelocityBall.x *= -1; // change direction
-        //print(myCollisionVelocityBall); // this is the direction of the ball!!!!!!! (before collision)
         }
   }
   bool switchDirectionCheck(){
