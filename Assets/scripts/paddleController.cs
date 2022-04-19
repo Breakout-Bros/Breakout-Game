@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static ballController;
+using System; // for Math
 
 //Citation: https://gamedevbeginner.com/raycasts-in-unity-made-easy/
 
-public class paddleController : MonoBehaviour
+public class PaddleController : MonoBehaviour
 {
 private CharacterController _controller;
 public const float Speed = 0.4f;
@@ -16,6 +16,9 @@ public Collider2D myCollider;
 public RaycastHit2D[] hitInfo = new RaycastHit2D[1];
 public Rigidbody2D myBody;
 private float spriteHalfLen;
+private float spriteLen;
+public float heading;
+private int segments = 5;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +28,7 @@ private float spriteHalfLen;
        //Debug.Log(myCollider);
         myBody = GetComponent<Rigidbody2D>();
         spriteHalfLen = GetComponent<SpriteRenderer>().bounds.extents.x;
+        spriteLen = spriteHalfLen * 2;
     }
 
     // Update is called once per frame
@@ -71,10 +75,14 @@ private float spriteHalfLen;
      Vector3 normal = collision.contacts[0].normal;
      Vector3 vel = myBody.velocity;
      Vector3 colPoint = collision.contacts[0].point;
-     Vector3 heading = colPoint - myBody.transform.position;
+     Vector3 headingVector = colPoint - myBody.transform.position;
+     heading = headingVector.x + spriteHalfLen;
+
      ////////////////////////// keep this:
-    Debug.Log(heading);// this is where on the paddle the collision occurred!
+    //Debug.Log(headingVector);// this is where on the paddle the collision occurred!
      //////////////////////////
+    
+    
      //Vector3.OrthoNormalize(ref heading, ref colPoint);
 
             // Debug.Log("after: " + heading);// Vector3.Angle(vel, -normal));
@@ -86,17 +94,18 @@ private float spriteHalfLen;
         // Debug.Log("AngleTest1: " + collisionAngleTest1);
 
 
-
-
     //  // measure angle
     //  if (Vector3.Angle(vel, -normal) > maxAngle){
     //     //Debug.Log("Help");
-    //      // bullet bounces off the surface
     //      myBody.velocity = Vector3.Reflect(vel, normal);
-    //  } else {
-    //      // bullet penetrates the target - apply damage...
-    //      //Destroy(gameObject); // and destroy the bullet
-    //  }
+    //  } 
+  }
+
+  public int getCollisionSegment(){
+      // this gets which segment (1-5, left to right) of the paddle the ball hit
+      float headingPercent = heading / spriteLen;
+      int segment = (int) Math.Ceiling(headingPercent * 100 / (100 / segments));
+      return segment;
   }
 
 
