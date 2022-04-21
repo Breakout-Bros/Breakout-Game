@@ -4,32 +4,43 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-     public float MoveSpeed = 250.0f;
-     public Rigidbody2D myBall;
-    public Vector3 direction;
+     private float MoveSpeed = 9.2f;
+     private Rigidbody2D myBall;
+    private Vector2 direction;
     private Vector2 tempBallVelocity;
-    public float collisionAngleTest1;
+    private float collisionAngleTest1;
     private int collisionPaddleSegment;
 
     // Start is called before the first frame update
     void Start()
     {
-        direction= new Vector3(1, 0, 0);
+        direction = new Vector2(0.3f, -0.2f);
         myBall = GetComponent<Rigidbody2D>();
-        myBall.AddForce(transform.up * -1.2f * MoveSpeed);
-        myBall.AddForce(transform.right * MoveSpeed);
-        direction.x = myBall.velocity.x;
-        direction.y = myBall.velocity.y;
+        myBall.velocity = direction.normalized * MoveSpeed;
+        //myBall.velocity =  AddForce(transform.up * -1.2f * MoveSpeed);
+        //myBall.AddForce(transform.right * MoveSpeed);
+
+        //myBall.AddForce(new Vector2(transform.position.y * -1.2f * MoveSpeed,transform.position.x * MoveSpeed));
+
+        //direction.x = myBall.velocity.x;
+        //direction.y = myBall.velocity.y;
     }
 
     // Update is called once per frame
     void Update()
     {
-      //TODO: somewhere here we'll have to set the velocity as steady
+              // I THINK this sets the velocity as steady
+              myBall.velocity = myBall.velocity.normalized * MoveSpeed;
+
     }
  void OnCollisionEnter2D(Collision2D collision){
 
         if (collision.collider.name == "paddle"){
+
+          print(collision.GetContact(0));
+           //transform.rotation = Quaternion.Euler(0, 0, 10); 
+           //myBall.AddForce(transform.rotation);
+
         // Vector3 normal = collision.contacts[0].normal;
         // collisionAngleTest1 = Vector3.Angle(myCollisionVelocityBall, -normal);
        //  Debug.Log("collision Angle: " + collisionAngleTest1); // this is the angle the ball hits the paddle!
