@@ -13,7 +13,7 @@ public class boxScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -21,10 +21,10 @@ public class boxScript : MonoBehaviour
     void Update()
 
     {
-        
+
         if (destroyBlock)
         {
-           //destroyBlock = false;
+            //destroyBlock = false;
             // AudioSource audio;
             // audio = GetComponent<AudioSource>();
             // audio.Play();

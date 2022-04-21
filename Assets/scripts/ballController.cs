@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-     private float MoveSpeed = 9.2f;
-     private Rigidbody2D myBall;
+    private float MoveSpeed = 9.2f;
+    private Rigidbody2D myBall;
     private Vector2 direction;
     private Vector2 tempBallVelocity;
     private float collisionAngleTest1;
@@ -17,61 +17,56 @@ public class BallController : MonoBehaviour
         direction = new Vector2(0.3f, -0.2f);
         myBall = GetComponent<Rigidbody2D>();
         myBall.velocity = direction.normalized * MoveSpeed;
-        //myBall.velocity =  AddForce(transform.up * -1.2f * MoveSpeed);
-        //myBall.AddForce(transform.right * MoveSpeed);
-
-        //myBall.AddForce(new Vector2(transform.position.y * -1.2f * MoveSpeed,transform.position.x * MoveSpeed));
-
-        //direction.x = myBall.velocity.x;
-        //direction.y = myBall.velocity.y;
     }
 
     // Update is called once per frame
     void Update()
     {
-              // I THINK this sets the velocity as steady
-              myBall.velocity = myBall.velocity.normalized * MoveSpeed;
-
+        // This sets the velocity as steady
+        myBall.velocity = myBall.velocity.normalized * MoveSpeed;
     }
- void OnCollisionEnter2D(Collision2D collision){
+    void OnCollisionEnter2D(Collision2D collision)
+    {
 
-        if (collision.collider.name == "paddle"){
+        if (collision.collider.name == "paddle")
+        {
 
-          print(collision.GetContact(0));
-           //transform.rotation = Quaternion.Euler(0, 0, 10); 
-           //myBall.AddForce(transform.rotation);
+            Vector3 normal = collision.contacts[0].normal;
+            collisionAngleTest1 = Vector3.Angle(myBall.velocity, -normal);
+            Debug.Log("collision Angle: " + collisionAngleTest1); // this is the angle the ball hits the paddle!
 
-        // Vector3 normal = collision.contacts[0].normal;
-        // collisionAngleTest1 = Vector3.Angle(myCollisionVelocityBall, -normal);
-       //  Debug.Log("collision Angle: " + collisionAngleTest1); // this is the angle the ball hits the paddle!
+            // this gets the method we need from PaddleController
+            GameObject go = GameObject.Find("paddle");
+            PaddleController paddleController = (PaddleController)go.GetComponent(typeof(PaddleController));
 
-        // this gets the method we need from PaddleController
-        GameObject go = GameObject.Find("paddle");
-        PaddleController paddleController = (PaddleController) go.GetComponent(typeof(PaddleController));
+            // this gets which part (segment, 1-5) of the paddle the ball hit
+            collisionPaddleSegment = paddleController.getCollisionSegment();
 
-        // this gets which part (segment, 1-5) of the paddle the ball hit
-        collisionPaddleSegment = paddleController.getCollisionSegment();
-        
-        if (switchDirectionCheck()){
-          // reverse direction
-          tempBallVelocity = new Vector2(myBall.velocity.x *-1, myBall.velocity.y);
-          myBall.velocity = tempBallVelocity;
+            if (switchDirectionCheck())
+            {
+                // reverse direction
+                tempBallVelocity = new Vector2(myBall.velocity.x * -1, myBall.velocity.y);
+                myBall.velocity = tempBallVelocity;
+            }
+
+            //print("myBall.velocity is" + myBall.velocity);
+
         }
-        
-        print("myBall.velocity is" + myBall.velocity);
-        
+    }
+    bool switchDirectionCheck()
+    {
+        // check to see if we should change the ball's direction
+        if (collisionPaddleSegment < 3 && (myBall.velocity.x > 0))
+        {
+            return true;
         }
-  }
-  bool switchDirectionCheck(){
-    // check to see if we should change the ball's direction
-    if(collisionPaddleSegment < 3 && (myBall.velocity.x > 0)){
-      return true;
+        if (collisionPaddleSegment > 3 && (myBall.velocity.x < 0))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
-    if(collisionPaddleSegment > 3 && (myBall.velocity.x < 0)){
-      return true;
-    }
-    else{
-      return false;
-    }
-  }
 }
