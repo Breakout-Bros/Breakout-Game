@@ -8,7 +8,8 @@ using static System.Math;
 public class PaddleController : MonoBehaviour
 {
     private CharacterController _controller;
-    public const float Speed = 0.4f;
+    //public const float Speed = 0.4f;
+    public const float Speed = 0.25f;
     public Collider2D myCollider;
     //public var tangent;
 
